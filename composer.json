@@ -1,0 +1,22 @@
+{
+  "name": "bluesquare-packages/symfony-billing",
+  "description": "Billing bunlde created by Bluesquare Computing",
+  "keywords": ["template", "composer", "package"],
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "MEIGNANT Loann",
+      "email": "loann@bluesquare.io"
+    }
+  ],
+  "type": "symfony-bundle",
+  "require": {
+    "php": ">=7.1",
+    "doctrine/event-manager": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bluesquare\\BillingBundle\\": "BillingBundle/"
+    }
+  }
+}
