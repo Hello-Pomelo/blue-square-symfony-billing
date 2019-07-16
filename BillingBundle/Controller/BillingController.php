@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BillingController extends AbstractController
 {
-    public function webhookAction()
+    public function webhook()
     {
         \Stripe\Stripe::setApiKey($this->container->get('stripe_api_key_secret'));
 
