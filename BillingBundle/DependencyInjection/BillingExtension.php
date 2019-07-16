@@ -5,6 +5,7 @@ namespace Bluesquare\BillingBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\Config\FileLocator;
 
 class BillingExtension extends Extension
 {
