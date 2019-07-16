@@ -13,25 +13,23 @@ class BillingSrv
         $this->container = $container;
     }
 
-    public function createPurchase($items)
+    public function createPurchase($user_email, $items, $cbFormatter)
     {
         $apiKey = $this->container->getParameter('stripe_api_key_secret');
 
         \Stripe\Stripe::setApiKey($apiKey);
 
+        $line_items = [];
+
+        foreach ($items as $item) $line_items = $cbFormatter($item);
+
         return (
             \Stripe\Checkout\Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => [[
-                    'name' => 'T-shirt',
-                    'description' => 'Comfortable cotton t-shirt',
-                    'images' => ['https://example.com/t-shirt.png'],
-                    'amount' => 500,
-                    'currency' => 'eur',
-                    'quantity' => 1,
-                ]],
-                'success_url' => 'http://18d049f8.ngrok.io/redirected',
-                'cancel_url' => 'http://18d049f8.ngrok.io/cancel',
+                'customer_email' => $user_email,
+                'payment_method_types' => $this->container->getParameter('payment_method'),
+                'line_items' => $line_items,
+                'success_url' => 'http://18d049f8.ngrok.io' . $this->container->getParameter('stripe_success_url'),
+                'cancel_url' => 'http://18d049f8.ngrok.io' . $this->container->getParameter('stripe_cancel_url'),
             ])
         );
     }

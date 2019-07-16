@@ -16,6 +16,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('stripe_api_key_pub')->end()
                 ->scalarNode('stripe_api_key')->end()
                 ->scalarNode('stripe_webhook_key')->end()
+                ->scalarNode('stripe_success_url')->end()
+                ->scalarNode('stripe_cancel_url')->end()
+                ->scalarNode('payment_method')->end()
+                ->scalarNode('payment_confirmation_route')->end()
             ->end()
         ->end();
 

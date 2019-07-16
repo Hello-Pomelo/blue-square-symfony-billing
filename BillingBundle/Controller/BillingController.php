@@ -33,10 +33,7 @@ class BillingController extends AbstractController
             if ($event->type == 'checkout.session.completed') {
                 $session = $event->data->object;
 
-                // Fulfill the purchase...
-                if (file_put_contents("/tmp/return_stripe_session", json_encode($session)) !== false)
-                    return $this->json("OK", 200);
-                return $this->json("KO", 500);
+                return $this->redirectToRoute($this->container->getParameter('payment_confirmation_route'), $session);
             }
 
         } catch(\UnexpectedValueException $e) {

@@ -18,11 +18,4 @@ class BillingBundle extends Bundle
     {
         parent::build($container);
     }
-
-//    public function getContainerExtension()
-//    {
-//        if (null === $this->extension)
-//            $this->extension = new StorageExtension();
-//        return $this->extension;
-//    }
 }
