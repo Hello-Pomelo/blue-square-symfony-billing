@@ -10,7 +10,7 @@ class BillingController extends AbstractController
     {
         \Stripe\Stripe::setApiKey($this->getParameter('stripe_api_key_secret'));
 
-        $endpoint_secret = $this->container->get('stripe_webhook_key');
+        $endpoint_secret = $this->getParameter('stripe_webhook_key');
 
         $payload = @file_get_contents('php://input');
         $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
