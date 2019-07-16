@@ -12,6 +12,7 @@ class BillingSrv
     {
         $this->container = $container;
     }
+
     public function createPurchase($items)
     {
         $apiKey = $this->container->getParameter('stripe_api_key_secret');
