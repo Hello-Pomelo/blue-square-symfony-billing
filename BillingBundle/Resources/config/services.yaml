@@ -4,7 +4,7 @@ services:
         arguments:
             $container: "@service_container"
 
-    Bluesquare\Controller\:
+    Bluesquare\BillingBundle\Controller\:
         resource: "../../Controller/*"
         arguments:
             $container: "@service_container"
