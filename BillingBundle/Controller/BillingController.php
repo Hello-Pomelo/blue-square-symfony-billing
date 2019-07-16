@@ -3,10 +3,21 @@
 namespace Bluesquare\BillingBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Log\LoggerInterface;
 
 class BillingController extends AbstractController
 {
-    public function webhook(LoggerInterface $logger)
+    private $logger;
+    private $container;
+
+    public function __construct(ContainerInterface $container, LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+        $this->container = $container;
+    }
+
+    public function webhook()
     {
         \Stripe\Stripe::setApiKey($this->getParameter('stripe_api_key_secret'));
 
