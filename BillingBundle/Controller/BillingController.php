@@ -19,9 +19,9 @@ class BillingController extends AbstractController
 
     public function webhook()
     {
-        \Stripe\Stripe::setApiKey($this->getParameter('stripe_api_key_secret'));
+        \Stripe\Stripe::setApiKey($this->container->getParameter('stripe_api_key_secret'));
 
-        $endpoint_secret = $this->getParameter('stripe_webhook_key');
+        $endpoint_secret = $this->container->getParameter('stripe_webhook_key');
 
         $payload = @file_get_contents('php://input');
         $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
@@ -31,10 +31,10 @@ class BillingController extends AbstractController
             $event = \Stripe\Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
 
         } catch(\UnexpectedValueException $e) {
-            $logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
             exit();
         } catch(\Stripe\Error\SignatureVerification $e) {
-            $logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
             exit();
         }
 
