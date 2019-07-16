@@ -17,10 +17,8 @@ class BillingExtension extends Extension
 
         $configuration = new Configuration();
 
-        $this->addAnnotatedClassesToCompile([
-            'Bluesquare\\BillingBundle\\Controller\\'
-        ]);
-
         $config = $this->processConfiguration($configuration, $configs);
+
+        return $config;
     }
 }
