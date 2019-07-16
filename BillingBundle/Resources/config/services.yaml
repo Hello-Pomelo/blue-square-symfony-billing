@@ -1,5 +1,5 @@
 services:
-    Bluesquare\BillingBundle\:
+    Bluesquare\BillingBundle\Service\:
         resource: "../../Service/*"
         arguments:
             $container: "@service_container"
