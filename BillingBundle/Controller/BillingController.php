@@ -8,8 +8,8 @@ use Psr\Log\LoggerInterface;
 
 class BillingController extends AbstractController
 {
-    private $logger;
-    private $container;
+    protected $logger;
+    protected $container;
 
     public function __construct(ContainerInterface $container, LoggerInterface $logger)
     {
