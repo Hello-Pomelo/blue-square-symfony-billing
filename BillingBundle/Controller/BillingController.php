@@ -33,7 +33,7 @@ class BillingController extends AbstractController
             if ($event->type == 'checkout.session.completed') {
                 $session = $event->data->object;
 
-                return $this->redirectToRoute($this->container->getParameter('payment_confirmation_route'), $session);
+                return $this->redirectToRoute($this->container->getParameter('payment_confirmation_route'), (array) $session);
             }
 
         } catch(\UnexpectedValueException $e) {
