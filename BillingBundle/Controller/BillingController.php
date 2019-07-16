@@ -30,6 +30,15 @@ class BillingController extends AbstractController
         try {
             $event = \Stripe\Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
 
+            if ($event->type == 'checkout.session.completed') {
+                $session = $event->data->object;
+
+                // Fulfill the purchase...
+                if (file_put_contents("/tmp/return_stripe_session", json_encode($session)) !== false)
+                    return $this->json("OK", 200);
+                return $this->json("KO", 500);
+            }
+
         } catch(\UnexpectedValueException $e) {
             $this->logger->error($e->getMessage());
             exit();
@@ -38,14 +47,6 @@ class BillingController extends AbstractController
             exit();
         }
 
-        if ($event->type == 'checkout.session.completed') {
-            $session = $event->data->object;
-
-            // Fulfill the purchase...
-            file_put_contents("/tmp/return_stripe_session", json_encode($session));
-            //handle_checkout_session($session);
-        }
-
-        return $this->json("OK", 200);
+        return $this->json("KO", 500);
     }
 }
