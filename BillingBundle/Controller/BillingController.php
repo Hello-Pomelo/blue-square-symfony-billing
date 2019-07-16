@@ -42,7 +42,7 @@ class BillingController extends AbstractController
             $session = $event->data->object;
 
             // Fulfill the purchase...
-            file_put_contents("/tmp/test_stripe", json_encode($session));
+            file_put_contents("/tmp/return_stripe_session", json_encode($session));
             //handle_checkout_session($session);
         }
 
