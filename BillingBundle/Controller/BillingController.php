@@ -8,7 +8,7 @@ class BillingController extends AbstractController
 {
     public function webhook()
     {
-        \Stripe\Stripe::setApiKey($this->container->get('stripe_api_key_secret'));
+        \Stripe\Stripe::setApiKey($this->getParameter('stripe_api_key_secret'));
 
         // You can find your endpoint's secret in your webhook settings
         $endpoint_secret = $this->container->get('stripe_webhook_key');
