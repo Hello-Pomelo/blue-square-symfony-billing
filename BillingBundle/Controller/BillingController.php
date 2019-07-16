@@ -6,11 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BillingController extends AbstractController
 {
-    public function webhook()
+    public function webhook(LoggerInterface $logger)
     {
         \Stripe\Stripe::setApiKey($this->getParameter('stripe_api_key_secret'));
 
-        // You can find your endpoint's secret in your webhook settings
         $endpoint_secret = $this->container->get('stripe_webhook_key');
 
         $payload = @file_get_contents('php://input');
@@ -21,16 +20,13 @@ class BillingController extends AbstractController
             $event = \Stripe\Webhook::constructEvent($payload, $sig_header, $endpoint_secret);
 
         } catch(\UnexpectedValueException $e) {
-            // Invalid payload
-            file_put_contents("/tmp/test_stripe", json_encode($e->getMessage()));
+            $logger->error($e->getMessage());
             exit();
         } catch(\Stripe\Error\SignatureVerification $e) {
-            // Invalid signature
-            file_put_contents("/tmp/test_stripe", json_encode($e->getMessage()));
+            $logger->error($e->getMessage());
             exit();
         }
 
-        // Handle the checkout.session.completed event
         if ($event->type == 'checkout.session.completed') {
             $session = $event->data->object;
 

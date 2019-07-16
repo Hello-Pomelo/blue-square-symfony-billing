@@ -4,3 +4,9 @@ services:
         arguments:
             $container: "@service_container"
 
+    Bluesquare\Controller\:
+        resource: "../../Controller/*"
+        arguments:
+            $container: "@service_container"
+            $logger: "@logger"
+
