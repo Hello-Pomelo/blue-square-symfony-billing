@@ -6,6 +6,7 @@ services:
 
     Bluesquare\BillingBundle\Controller\:
         resource: "../../Controller/*"
+        tags: ['controller.service_arguments']
         arguments:
             $container: "@service_container"
             $logger: "@logger"
