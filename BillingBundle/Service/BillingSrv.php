@@ -21,7 +21,7 @@ class BillingSrv
 
         $line_items = [];
 
-        foreach ($items as $item) $line_items = $cbFormatter($item);
+        foreach ($items as $item) $line_items[] = $cbFormatter($item);
 
         return (
             \Stripe\Checkout\Session::create([
