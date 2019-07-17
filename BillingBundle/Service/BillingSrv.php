@@ -23,13 +23,15 @@ class BillingSrv
 
         foreach ($items as $item) $line_items[] = $cbFormatter($item);
 
+        $ngrok_url = $this->container->getParameter('dev_ngrok_prefix');
+
         return (
             \Stripe\Checkout\Session::create([
                 'customer_email' => $user_email,
                 'payment_method_types' => $this->container->getParameter('payment_method'),
                 'line_items' => $line_items,
-                'success_url' => 'http://18d049f8.ngrok.io' . $this->container->getParameter('stripe_success_url'),
-                'cancel_url' => 'http://18d049f8.ngrok.io' . $this->container->getParameter('stripe_cancel_url'),
+                'success_url' => $ngrok_url . $this->container->getParameter('stripe_success_url'),
+                'cancel_url' => $ngrok_url . $this->container->getParameter('stripe_cancel_url'),
             ])
         );
     }
