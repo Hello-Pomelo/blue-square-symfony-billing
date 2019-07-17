@@ -37,17 +37,9 @@ class BillingController extends AbstractController
 
                 list($service, $function) = explode('::', $serviceToCall);
 
-                $srv = null;
+                $srv = new $service();
 
-                if (class_exists($service))
-                    $srv = new $service();
-                else
-                    $this->logger->error("Can't find your class to redirect webhook");
-
-                if (method_exists($srv, $function))
-                    $srv->{$function}($session);
-                else
-                    $this->logger->error("Can't find your method in class " . $service);
+                $srv->{$function}($session);
 
                 return $this->json("OK", 200);
             }
