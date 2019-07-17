@@ -35,9 +35,19 @@ class BillingController extends AbstractController
 
                 $serviceToCall = $this->container->getParameter('payment_confirmation_service');
 
-                $srv = new $serviceToCall();
+                list($service, $function) = str_split($serviceToCall, '::');
 
-                $srv->handlePayment($session);
+                $srv = null;
+
+                if (class_exists($service))
+                    $srv = new $service();
+                else
+                    $this->logger->error("Can't find your class to redirect webhook");
+
+                if (method_exists($srv, $function))
+                    $srv->{$function}($session);
+                else
+                    $this->logger->error("Can't find your method in class " . $service);
 
                 return $this->json("OK", 200);
             }
