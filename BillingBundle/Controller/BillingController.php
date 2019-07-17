@@ -35,7 +35,7 @@ class BillingController extends AbstractController
 
                 $serviceToCall = $this->container->getParameter('payment_confirmation_service');
 
-                list($service, $function) = str_split($serviceToCall, '::');
+                list($service, $function) = explode('::', $serviceToCall);
 
                 $srv = null;
 
