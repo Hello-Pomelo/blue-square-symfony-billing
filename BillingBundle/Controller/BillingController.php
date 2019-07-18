@@ -37,7 +37,7 @@ class BillingController extends AbstractController
 
                 list($service, $function) = explode('::', $serviceToCall);
 
-                $srv = new $service();
+                $srv = $this->container->get($service);
 
                 $srv->{$function}($session);
 
