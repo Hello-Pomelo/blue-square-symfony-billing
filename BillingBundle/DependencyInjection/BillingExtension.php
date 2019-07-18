@@ -21,4 +21,9 @@ class BillingExtension extends Extension
 
         return $config;
     }
+
+    public function getAlias()
+    {
+        return 'bluesquare.billing_bundle';
+    }
 }
