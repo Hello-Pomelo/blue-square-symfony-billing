@@ -45,6 +45,6 @@ class BillingSrv
     {
         $this->setApiKey();
 
-        $intent = \Stripe\PaymentIntent::retrieve($paimentIntent);
+        return \Stripe\PaymentIntent::retrieve($paimentIntent);
     }
 }
