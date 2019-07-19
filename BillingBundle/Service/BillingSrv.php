@@ -13,11 +13,16 @@ class BillingSrv
         $this->container = $container;
     }
 
-    public function createPurchase($user_email, $items, $cbFormatter)
+    private function setApiKey()
     {
         $apiKey = $this->container->getParameter('stripe_api_key_secret');
 
         \Stripe\Stripe::setApiKey($apiKey);
+    }
+
+    public function createPurchase($customer, $items, $cbFormatter)
+    {
+        $this->setApiKey();
 
         $line_items = [];
 
@@ -27,12 +32,19 @@ class BillingSrv
 
         return (
             \Stripe\Checkout\Session::create([
-                'customer_email' => $user_email,
+                'customer' => $customer,
                 'payment_method_types' => $this->container->getParameter('payment_method'),
                 'line_items' => $line_items,
                 'success_url' => $ngrok_url . $this->container->getParameter('stripe_success_url'),
                 'cancel_url' => $ngrok_url . $this->container->getParameter('stripe_cancel_url'),
             ])
         );
+    }
+
+    public function retrievePurchase($paimentIntent)
+    {
+        $this->setApiKey();
+
+        $intent = \Stripe\PaymentIntent::retrieve($paimentIntent);
     }
 }
