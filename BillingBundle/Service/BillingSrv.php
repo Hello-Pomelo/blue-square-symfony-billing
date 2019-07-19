@@ -41,6 +41,13 @@ class BillingSrv
         );
     }
 
+    public function confirmPayment($paimentIntent)
+    {
+        $infoIntent = $this->retrievePurchase($paimentIntent);
+
+        return ($infoIntent['amount'] == $infoIntent['amount_received'] && $infoIntent['amount_capturable'] == 0);
+    }
+
     public function retrievePurchase($paimentIntent)
     {
         $this->setApiKey();
