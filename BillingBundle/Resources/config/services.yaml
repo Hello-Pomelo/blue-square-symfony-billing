@@ -1,6 +1,7 @@
 services:
     Bluesquare\BillingBundle\Service\:
         resource: "../../Service/*"
+        public: true
         arguments:
             $container: "@service_container"
 
