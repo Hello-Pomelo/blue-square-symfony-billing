@@ -4,6 +4,7 @@ services:
         public: true
         arguments:
             $container: "@service_container"
+            $env: '%kernel.environment%'
 
     Bluesquare\BillingBundle\Controller\:
         resource: "../../Controller/*"

@@ -7,10 +7,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class BillingSrv
 {
     private $container;
+    private $url_prefix;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, $env)
     {
         $this->container = $container;
+
+        $this->url_prefix = $env->isDebug() ? $this->container->getParameter('dev_ngrok_prefix')
+                                            : $container->get('router')->getContext()->getBaseUrl();
     }
 
     private function setApiKey()
@@ -28,15 +32,13 @@ class BillingSrv
 
         foreach ($items as $item) $line_items[] = $cbFormatter($item);
 
-        $ngrok_url = $this->container->getParameter('dev_ngrok_prefix');
-
         return (
             \Stripe\Checkout\Session::create([
                 'customer' => $customer,
                 'payment_method_types' => $this->container->getParameter('payment_method'),
                 'line_items' => $line_items,
-                'success_url' => $ngrok_url . $this->container->getParameter('stripe_success_url'),
-                'cancel_url' => $ngrok_url . $this->container->getParameter('stripe_cancel_url'),
+                'success_url' => $this->url_prefix . $this->container->getParameter('stripe_success_url'),
+                'cancel_url' => $this->url_prefix . $this->container->getParameter('stripe_cancel_url'),
             ])
         );
     }
