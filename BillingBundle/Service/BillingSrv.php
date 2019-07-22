@@ -43,7 +43,7 @@ class BillingSrv
         );
     }
 
-    public function confirmPayment($paimentIntent)
+    public function confirmPurchase($paimentIntent)
     {
         $infoIntent = $this->retrievePurchase($paimentIntent);
 
