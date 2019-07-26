@@ -13,7 +13,10 @@ class BillingSrv
     {
         $this->container = $container;
 
-        $this->url_prefix = $env == "dev"   ? $this->container->getParameter('dev_ngrok_prefix')
+        $ngrok_prefix = $this->container->getParameter('dev_ngrok_prefix');
+
+        $this->url_prefix = $env == ("dev" && !empty($ngrok_prefix))
+                                            ? $ngrok_prefix
                                             : $container->get('router')->getContext()->getBaseUrl();
     }
 
