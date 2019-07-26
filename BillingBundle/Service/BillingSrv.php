@@ -15,9 +15,9 @@ class BillingSrv
 
         $ngrok_prefix = $this->container->getParameter('dev_ngrok_prefix');
 
-        $this->url_prefix = ($env == "dev" && !empty($ngrok_prefix))
-                                            ? $ngrok_prefix
-                                            : $container->get('router')->getContext()->getBaseUrl();
+        $base_url = $this->container->getParameter('prod_prefix');
+
+        $this->url_prefix = ($env == "dev" && !empty($ngrok_prefix)) ? $ngrok_prefix : $base_url;
     }
 
     private function setApiKey()
