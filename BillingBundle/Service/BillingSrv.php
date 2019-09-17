@@ -7,11 +7,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class BillingSrv
 {
     private $container;
+    private $manager;
     private $url_prefix;
 
-    public function __construct(ContainerInterface $container, $env)
+    public function __construct(ContainerInterface $container, EntityManager $manager, $env)
     {
         $this->container = $container;
+
+        $this->manager = $manager;
 
         $ngrok_prefix = $this->container->getParameter('dev_ngrok_prefix');
 
@@ -33,11 +36,33 @@ class BillingSrv
 
         $line_items = [];
 
+        if (empty($customer->getStripeCustomerId()))
+        {
+            $customer = \Stripe\Customer::create(array(
+                "description" => "Customer for ".$customer->getUsername(),
+                "email" => $customer->getUsername(),
+                "metadata" => [
+                    "Prénom" => $customer->getFirstname(),
+                    "Nom" => $customer->getLastname(),
+                    "Entreprise" => $customer->getCompany()
+                ]
+            ));
+
+            $customerId = $customer["id"];
+            $customer->setStripeCustomerId($customerId);
+            $this->manager->persist($customer);
+            $this->manager->flush();
+
+            $stripeCustomerId = $customerId;
+        }
+        else
+            $stripeCustomerId = $customer->getStripeCustomerId();
+
         foreach ($items as $item) $line_items[] = $cbFormatter($item);
 
         return (
             \Stripe\Checkout\Session::create([
-                'customer' => $customer,
+                'customer' => $stripeCustomerId,
                 'payment_method_types' => $this->container->getParameter('payment_method'),
                 'line_items' => $line_items,
                 'success_url' => $this->url_prefix . $this->container->getParameter('stripe_success_url'),
