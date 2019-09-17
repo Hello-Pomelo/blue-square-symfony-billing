@@ -4,7 +4,7 @@ services:
         public: true
         arguments:
             $container: "@service_container",
-            $manager: "@doctrine.orm.entity_manager"
+            $manager: "@doctrine.orm.entity_manager",
             $env: '%kernel.environment%'
 
     Bluesquare\BillingBundle\Controller\:
