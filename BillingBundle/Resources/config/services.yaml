@@ -2,10 +2,7 @@ services:
     Bluesquare\BillingBundle\Service\:
         resource: "../../Service/*"
         public: true
-        arguments:
-            $container: "@service_container",
-            $manager: "@doctrine.orm.entity_manager",
-            $env: '%kernel.environment%'
+        arguments: ["@service_container","@doctrine.orm.entity_manager",'%kernel.environment%']
 
     Bluesquare\BillingBundle\Controller\:
         resource: "../../Controller/*"
