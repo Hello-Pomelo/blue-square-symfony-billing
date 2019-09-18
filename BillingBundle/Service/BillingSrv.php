@@ -38,7 +38,7 @@ class BillingSrv
 
         if (empty($customer->getStripeCustomerId()))
         {
-            $customer = \Stripe\Customer::create(array(
+            $stripeCustomer = \Stripe\Customer::create(array(
                 "description" => "Customer for ".$customer->getUsername(),
                 "email" => $customer->getUsername(),
                 "metadata" => [
@@ -48,7 +48,7 @@ class BillingSrv
                 ]
             ));
 
-            $customerId = $customer["id"];
+            $customerId = $stripeCustomer["id"];
             $customer->setStripeCustomerId($customerId);
             $this->manager->persist($customer);
             $this->manager->flush();
